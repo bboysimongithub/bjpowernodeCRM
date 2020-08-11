@@ -49,13 +49,14 @@ request.getContextPath() + "/";
 				return false;
 			}
 
+
 			/*程序执行到这里访问后台验证账号密码，使用ajax请求*/
 			$.ajax({
 
-				url:"user/login.do",
-				date:{
-					loginAct,
-					loginPwd
+				url:"settings/user/login.do",
+				data:{
+					"loginAct":loginAct,
+					"loginPwd":loginPwd
 				},
 				type:"post",
 				dataType:"json",
@@ -77,7 +78,7 @@ request.getContextPath() + "/";
 </head>
 <body>
 	<div style="position: absolute; top: 0px; left: 0px; width: 60%;">
-		<img src="image/IMG_7114.JPG" style="width: 100%; height: 90%; position: relative; top: 50px;">
+		<img src="image/IMG_7116.JPG" style="width: 100%; height: 90%; position: relative; top: 50px;">
 	</div>
 	<div id="top" style="height: 50px; background-color: #3C3C3C; width: 100%;">
 		<div style="position: absolute; top: 5px; left: 0px; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">CRM &nbsp;<span style="font-size: 12px;">&copy;2017&nbsp;我的第一个CRM</span></div>

@@ -10,7 +10,7 @@ public class User {
     private String expireTime;  //失效时间
     private String lockState;   //锁定状态，0、锁定   1、启动
     private String deptno;      //部门编号
-    private String allowlps;    //允许访问的ip地址
+    private String allowIps;    //允许访问的ip地址
     private String createTime;  //创建时间 19位
     private String createBy;    //创建人
     private String editTime;    //修改时间 19位
@@ -24,7 +24,7 @@ public class User {
                 String name,      String loginPwd,
                 String email,     String expireTime,
                 String lockState, String deptno,
-                String allowlps,  String createTime,
+                String allowIps,  String createTime,
                 String createBy,  String editTime,
                 String editBy) {
         this.id = id;
@@ -35,7 +35,7 @@ public class User {
         this.expireTime = expireTime;
         this.lockState = lockState;
         this.deptno = deptno;
-        this.allowlps = allowlps;
+        this.allowIps = allowIps;
         this.createTime = createTime;
         this.createBy = createBy;
         this.editTime = editTime;
@@ -107,11 +107,11 @@ public class User {
     }
 
     public String getAllowlps() {
-        return allowlps;
+        return allowIps;
     }
 
     public void setAllowlps(String allowlps) {
-        this.allowlps = allowlps;
+        this.allowIps = allowlps;
     }
 
     public String getCreateTime() {
@@ -157,7 +157,7 @@ public class User {
                 ", expireTime='" + expireTime + '\'' +
                 ", lockState='" + lockState + '\'' +
                 ", deptno='" + deptno + '\'' +
-                ", allowlps='" + allowlps + '\'' +
+                ", allowIps='" + allowIps + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", createBy='" + createBy + '\'' +
                 ", editTime='" + editTime + '\'' +
