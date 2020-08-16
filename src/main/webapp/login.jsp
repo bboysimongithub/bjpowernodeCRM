@@ -15,6 +15,11 @@ request.getContextPath() + "/";
 
 		$(function () {
 
+			if (window.top != window) {
+
+				window.top.location = window.location;
+			}
+
 			/*每次加载页面删除之前的登陆记录*/
 			$("#loginAct").val("")
 
@@ -64,7 +69,7 @@ request.getContextPath() + "/";
 
 					if (resp.success) {
 						/*登陆成功，跳转到form表单提交的页面*/
-						window.location.href = "workbench/index.html";
+						window.location.href = "workbench/index.jsp";
 					}else {
 						/*登陆失败，给msg输出原因*/
 						$("#msg").html(resp.msg);
@@ -89,7 +94,7 @@ request.getContextPath() + "/";
 			<div class="page-header">
 				<h1>登录</h1>
 			</div>
-			<form action="workbench/index.html" class="form-horizontal" role="form">
+			<form action="workbench/index.jsp" class="form-horizontal" role="form">
 				<div class="form-group form-group-lg">
 					<div style="width: 350px;">
 						<input class="form-control" type="text" placeholder="用户名" id="loginAct">

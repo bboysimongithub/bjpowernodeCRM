@@ -1,21 +1,85 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+String basePath = request.getScheme() + "://" +
+request.getServerName() + ":" + request.getServerPort() +
+request.getContextPath() + "/";
+%>
 <html>
 <head>
+	<base href="<%=basePath%>" />
 <meta charset="UTF-8">
 
-<link href="../../jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-<link href="../../jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
+<link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
 
-<script type="text/javascript" src="../../jquery/jquery-1.11.1-min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
+<script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
 <script type="text/javascript">
 
 	$(function(){
 		
-		
+		$("#addBttn").click(function (){
+
+			$(".time").datetimepicker({
+				minView: "month",
+				language:  'zh-CN',
+				format: 'yyyy-mm-dd',
+				autoclose: true,
+				todayBtn: true,
+				pickerPosition: "bottom-left"
+			});
+
+			$.ajax({
+				url:"workbench/activity/getUserList.do",
+				data:{},
+				type:"get",
+				dataType:"json",
+				success:function (reps){
+					$("#create-owner").empty();
+					$.each(reps,function (index,element){
+						$("#create-owner").append("<option value='"+element.id+"'>"+element.name+"</option>");
+					})
+					var id = "${user.id}";
+					$("#create-owner").val(id);
+				}
+			})
+			$("#createActivityModal").modal("show");
+		})
+
+		$("#savebttn").click(function () {
+
+			$.ajax({
+				url:"workbench/activity/save.do",
+				data:{
+
+
+					"owner"						:$.trim($("#create-owner").val()),
+					"name"						:$.trim($("#create-name").val()),
+					"startDate"					:$.trim($("#create-startDate").val()),
+					"endDate"					:$.trim($("#create-endDate").val()),
+					"cost"						:$.trim($("#create-cost").val()),
+					"description"				:$.trim($("#create-description").val())
+
+
+
+				},
+				type: "post",
+				dataType: "json",
+				success:function (reps) {
+
+					$("#resetKey")[0].reset();
+					if (reps.success) {
+						alert("添加成功");
+						$("#createActivityModal").modal("hide");
+					}else {
+						alert("添加失败");
+					}
+				}
+			})
+		})
 		
 	});
 	
@@ -35,31 +99,29 @@
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" id="resetKey">
 					
 						<div class="form-group">
 							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
-							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-marketActivityOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+							<div class="col-sm-10" style="width: 250px;">
+								<select class="form-control" id="create-owner">
+
 								</select>
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
-                            <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="create-marketActivityName">
+                            <div class="col-sm-10" style="width: 250px;">
+                                <input type="text" class="form-control" id="create-name">
                             </div>
 						</div>
 						
 						<div class="form-group">
 							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
-							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-startTime">
+							<div class="col-sm-10" style="width: 250px;">
+								<input type="text" class="form-control time" id="create-startDate" readonly/>
 							</div>
 							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
-							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-endTime">
+							<div class="col-sm-10" style="width: 250px;">
+								<input type="text" class="form-control time" id="create-endDate" readonly/>
 							</div>
 						</div>
                         <div class="form-group">
@@ -72,7 +134,7 @@
 						<div class="form-group">
 							<label for="create-describe" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="create-description"></textarea>
 							</div>
 						</div>
 						
@@ -81,7 +143,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-primary" id="savebttn">保存</button>
 				</div>
 			</div>
 		</div>
@@ -103,7 +165,7 @@
 					
 						<div class="form-group">
 							<label for="edit-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
-							<div class="col-sm-10" style="width: 300px;">
+							<div class="col-sm-10" style="width: 250px;">
 								<select class="form-control" id="edit-marketActivityOwner">
 								  <option>zhangsan</option>
 								  <option>lisi</option>
@@ -111,18 +173,18 @@
 								</select>
 							</div>
                             <label for="edit-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
-                            <div class="col-sm-10" style="width: 300px;">
+                            <div class="col-sm-10" style="width: 250px;">
                                 <input type="text" class="form-control" id="edit-marketActivityName" value="发传单">
                             </div>
 						</div>
 
 						<div class="form-group">
 							<label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
-							<div class="col-sm-10" style="width: 300px;">
+							<div class="col-sm-10" style="width: 250px;">
 								<input type="text" class="form-control" id="edit-startTime" value="2020-10-10">
 							</div>
 							<label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
-							<div class="col-sm-10" style="width: 300px;">
+							<div class="col-sm-10" style="width: 250px;">
 								<input type="text" class="form-control" id="edit-endTime" value="2020-10-20">
 							</div>
 						</div>
@@ -202,7 +264,7 @@
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createActivityModal"><span class="glyphicon glyphicon-plus"></span> 创建</button>
+				  <button type="button" class="btn btn-primary" id="addBttn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>

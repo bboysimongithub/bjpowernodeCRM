@@ -14,6 +14,7 @@
     <typeAliases>
         <!--name:实体类所在的包名(不是实体类的包名也可以)-->
         <package name="com.tankangya.crm.settings.entity"/>
+        <package name="com.tankangya.crm.workbench.entity"/>
     </typeAliases>
 
 
@@ -37,5 +38,6 @@
 
     <mappers>
         <package name="com.tankangya.crm.settings.dao"/>
+        <package name="com.tankangya.crm.workbench.dao"/>
     </mappers>
 </configuration>

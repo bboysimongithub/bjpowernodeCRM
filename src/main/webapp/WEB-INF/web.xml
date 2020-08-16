@@ -49,4 +49,15 @@
         <filter-name>characterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>com.tankangya.crm.web.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
 </web-app>
