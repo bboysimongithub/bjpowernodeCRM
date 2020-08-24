@@ -29,8 +29,6 @@ public class TwoController {
                                HttpServletResponse response,
                                String loginAct, String loginPwd) {
 
-        System.out.println("访问后台成功");
-
         loginPwd = MD5Util.getMD5(loginPwd);
 
         String ip = request.getRemoteAddr();

@@ -15,10 +15,10 @@
     <context:component-scan base-package="com.tankangya.crm.workbench.web.controller"/>
 
     <!--创建试图扫描器对象-->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
-    </bean>
+    </bean>-->
 
     <!--创建Springmvc的拦截器对象-->
     <!--<mvc:interceptors>

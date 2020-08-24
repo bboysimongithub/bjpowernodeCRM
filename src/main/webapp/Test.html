@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
+    <script type="text/javascript">
+
+        $("#qx").click(function () {
+            $("input[name = xz]").prop("checked", this.checked);
+        });
+
+    </script>
+</head>
+<body>
+
+    <center>
+        <table>
+            <thead>
+            <tr>
+                <td>
+                    <input type="checkbox" id="qx">全选
+                    <input type="checkbox" name="xz">小学
+                    <input type="checkbox" name="xz">初中
+                    <input type="checkbox" name="xz">高中
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </center>
+
+</body>
+</html>

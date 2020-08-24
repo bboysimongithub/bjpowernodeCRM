@@ -4,7 +4,7 @@ public class User {
 
     private String id;          //主键
     private String loginAct;    //登陆账号
-    private String name;        //真是姓名
+    private String name;        //真实姓名
     private String loginPwd;    //登陆密码
     private String email;       //邮箱
     private String expireTime;  //失效时间
