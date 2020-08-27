@@ -33,7 +33,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 
     @Override
-    public boolean save(Activity a) {
+    public boolean saveActivity(Activity a) {
         boolean flag = false;
 
         int number = dao.save(a);
@@ -60,7 +60,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public boolean delete(String[] ids) {
+    public boolean deleteActivity(String[] ids) {
         boolean flag = true;
 
         //查询出需要删除的备注的数量
@@ -100,7 +100,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public boolean update(Activity activity) {
+    public boolean updateActivity(Activity activity) {
         boolean flag = false;
 
         int count = dao.update(activity);

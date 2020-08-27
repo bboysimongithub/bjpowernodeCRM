@@ -73,7 +73,7 @@ public class ActivityController {
         a.setCreateTime(createTime);
         a.setCreateBy(createBy);*/
 
-        boolean flag = activityService.save(activity);
+        boolean flag = activityService.saveActivity(activity);
 
 
         PrintJson.printJsonFlag(response,flag);
@@ -107,7 +107,7 @@ public class ActivityController {
         return paginationVO;
     }
 
-    @RequestMapping(value = "/delete.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete.do")
     @ResponseBody
     public void delete (HttpServletRequest request,
                         HttpServletResponse response,
@@ -117,7 +117,7 @@ public class ActivityController {
 
         String ids[] = request.getParameterValues("id");
 
-        boolean flag = activityService.delete(ids);
+        boolean flag = activityService.deleteActivity(ids);
 
         PrintJson.printJsonFlag(response, flag);
     }
@@ -145,7 +145,7 @@ public class ActivityController {
         activity.setEditBy(((User)request.getSession().getAttribute("user")).getName());
 
 
-        boolean flag = activityService.update (activity);
+        boolean flag = activityService.updateActivity (activity);
 
 
         PrintJson.printJsonFlag(response,flag);

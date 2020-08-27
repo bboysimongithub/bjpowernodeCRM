@@ -10,15 +10,15 @@ import java.util.Map;
 
 public interface ActivityService {
 
-    public boolean save(Activity a);
+    public boolean saveActivity(Activity a);
 
     PaginationVO<Activity> pageList(Map<String, Object> map);
 
-    boolean delete(String[] aid);
+    boolean deleteActivity(String[] aid);
 
     Map<String, Object> getUserAndActivity(String id);
 
-    boolean update(Activity activity);
+    boolean updateActivity(Activity activity);
 
     Activity detail(String id);
 

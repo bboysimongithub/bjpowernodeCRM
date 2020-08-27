@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--引入properties文件位置-->
     <context:property-placeholder location="classpath:jdbc.properties"/>
@@ -33,4 +34,32 @@
     <context:component-scan base-package="com.tankangya.crm.workbench.service"/>
 
     <!--声明事务，等等-->
+    <!--声明事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+
+        <property name="dataSource" ref="dataSource"/>
+
+    </bean>
+
+    <!--声明业务方法-->
+    <tx:advice id="myAdvice" transaction-manager="transactionManager">
+
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRES_NEW"/>
+            <tx:method name="delete*"/>
+            <tx:method name="update*"/>
+            <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+
+    </tx:advice>
+
+    <!--配置AOP-->
+    <aop:config>
+
+        <aop:pointcut id="myPointcut" expression="execution(* *..service..*.*(..))"/>
+
+        <!--配置增强器-->
+        <aop:advisor advice-ref="myAdvice" pointcut-ref="myPointcut"/>
+
+    </aop:config>
 </beans>

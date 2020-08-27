@@ -12,6 +12,28 @@ public class test {
     特殊操作 login等
 
 
+*   dataType:"json",
+                success:function (reps) {
+
+                    var html = "<option></option>"
+                    $.each(reps.uList,function (index,element) {
+
+                        html += "<option value='"+element.id+"'>"+element.name+"</option>"
+
+                    })
+                    $("#edit-owner").html(html);
+
+                    //处理单条activity
+                    $("#edit-name").val(reps.a.name);
+                    $("#edit-owner").val(reps.a.owner);
+                    $("#edit-startDate").val(reps.a.startDate);
+                    $("#edit-endDate").val(reps.a.endDate);
+                    $("#edit-cost").val(reps.a.cost);
+                    $("#edit-description").val(reps.a.description);
+                    $("#edit-id").val(reps.a.id);
+
+                }
+*
   -->
     * */
 }
