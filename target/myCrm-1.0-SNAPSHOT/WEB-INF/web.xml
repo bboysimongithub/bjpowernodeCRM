@@ -28,6 +28,10 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <!--<listener>
+        <listener-class>com.tankangya.crm.web.listener.ContextListener</listener-class>
+    </listener>-->
+
     <!--注册字符集过滤器-->
     <filter>
         <filter-name>characterEncodingFilter</filter-name>

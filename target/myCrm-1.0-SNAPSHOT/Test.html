@@ -1,31 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<!--        <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+            <%
+            String basePath = request.getScheme() + "://" +
+            request.getServerName() + ":" + request.getServerPort() +
+            request.getContextPath() + "/";
+            %>                                                                                  -->
+<html>
 <head>
+    <base href="<%=basePath%>" />
     <meta charset="UTF-8">
     <title>Title</title>
 
     <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
     <script type="text/javascript">
 
-        $("#qx").click(function () {
-            $("input[name = xz]").prop("checked", this.checked);
-        });
+        $(function () {
+
+            $("#qx").click(function () {
+                $("input[name=xz]").prop("checked",this.checked);
+            })
+
+            $("input[name=xz]").click(function () {
+                $("#qx").prop("checked",$("input[name=xz]").length == $("input[name=xz]:checked").length);
+            })
+        })
 
     </script>
 </head>
 <body>
 
     <center>
+        <input type="checkbox" id="qx">全选
         <table>
             <thead>
             <tr>
                 <td>
-                    <input type="checkbox" id="qx">全选
                     <input type="checkbox" name="xz">小学
                     <input type="checkbox" name="xz">初中
                     <input type="checkbox" name="xz">高中
                 </td>
-            </tr>
             </thead>
         </table>
     </center>

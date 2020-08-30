@@ -134,7 +134,7 @@ request.getContextPath() + "/";
 				}
 			})
 		})
-		pageList(1,5);
+		pageList(1,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
 
 		$("#searchBttn").click(function () {
 
@@ -143,7 +143,8 @@ request.getContextPath() + "/";
 			$("#hidden-startDate").val($.trim($("#search-startDate").val()));
 			$("#hidden-endDate").val($.trim($("#search-endDate").val()));
 
-			pageList(1,5);
+			pageList($("#activityPage").bs_pagination('getOption', 'currentPage')
+					,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
 		})
 
 		$("#editbttn").click(function () {
@@ -153,7 +154,8 @@ request.getContextPath() + "/";
 				alert("请选择要修改的记录");
 			}else if ($xz.length > 1) {
 				alert("只能选择一条记录进行修改");
-				pageList(1,2);
+				pageList($("#activityPage").bs_pagination('getOption', 'currentPage')
+						,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
 			}else {
 				var id = $xz.val();
 				$.ajax({
