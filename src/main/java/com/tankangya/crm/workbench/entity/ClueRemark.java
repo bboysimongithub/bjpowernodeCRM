@@ -3,12 +3,12 @@ package com.tankangya.crm.workbench.entity;
 public class ClueRemark {
 	
 	private String id;
-	private String noteContent;
+	private String noteContent;		//备注信息
 	private String createBy;
 	private String createTime;
 	private String editBy;
 	private String editTime;
-	private String editFlag;
+	private String editFlag;		//是否修改过的标记
 	private String clueId;
 	
 	public String getId() {

@@ -1,6 +1,7 @@
 package com.tankangya.crm.workbench.dao;
 
 import com.tankangya.crm.workbench.entity.Activity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -20,4 +21,11 @@ public interface ActivityDao {
     int update(Activity activity);
 
     Activity detail(String id);
+
+    List<Activity> getActivityListByClueId(String clueId);
+
+    List<Activity> getActivityListByNameAndNotClueId(@Param("clueId")String id,
+                                                     @Param("name") String aname);
+
+    List<Activity> getActivityList(String name);
 }

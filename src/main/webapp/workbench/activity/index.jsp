@@ -16,9 +16,11 @@ request.getContextPath() + "/";
 <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+
 <link rel="stylesheet" type="text/css" href="jquery/bs_pagination/jquery.bs_pagination.min.css">
 <script type="text/javascript" src="jquery/bs_pagination/jquery.bs_pagination.min.js"></script>
 <script type="text/javascript" src="jquery/bs_pagination/en.js"></script>
+
 
 <script type="text/javascript">
 
@@ -134,7 +136,7 @@ request.getContextPath() + "/";
 				}
 			})
 		})
-		pageList(1,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+		pageList(1,10);
 
 		$("#searchBttn").click(function () {
 
@@ -154,8 +156,6 @@ request.getContextPath() + "/";
 				alert("请选择要修改的记录");
 			}else if ($xz.length > 1) {
 				alert("只能选择一条记录进行修改");
-				pageList($("#activityPage").bs_pagination('getOption', 'currentPage')
-						,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
 			}else {
 				var id = $xz.val();
 				$.ajax({
@@ -281,8 +281,9 @@ request.getContextPath() + "/";
 				$("#activityBody").html(html);
 
 				//计算总页数
-				var totalPages = data.total%pageSize==0?data.total/pageSize:parseInt(data.total/pageSize)+1
+				var totalPages = data.total%pageSize==0?data.total/pageSize:parseInt(data.total/pageSize)+1;
 
+				//数据处理完毕后，结合分页查询，对前端展现分页信息
 				$("#activityPage").bs_pagination({
 					currentPage: pageNo, // 页码
 					rowsPerPage: pageSize, // 每页显示的记录条数
@@ -297,6 +298,7 @@ request.getContextPath() + "/";
 					showRowsInfo: true,
 					showRowsDefaultInfo: true,
 
+					//该回调函数时在，点击分页组件的时候触发的
 					onChangePage : function(event, data){
 						pageList(data.currentPage , data.rowsPerPage);
 					}

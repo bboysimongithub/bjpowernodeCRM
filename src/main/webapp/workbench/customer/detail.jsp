@@ -52,8 +52,90 @@ request.getContextPath() + "/";
 		$(".myHref").mouseout(function(){
 			$(this).children("span").css("color","#E6E6E6");
 		});
+
+		$("#editCustomerBttn").click(function () {
+			$.ajax({
+				url:"workbench/customer/editCustomerById.do",
+				data:{
+					"id":"${customer.id}"
+				},
+				type:"post",
+				dataType:"json",
+				success:function (data) {
+
+					var html = "<option></option>";
+					$.each(data.uList,function (index, element) {
+						html += "<option value='"+element.id+"'>"+element.name+"</option>"
+					})
+
+					$("#edit-owner").html(html);
+
+					var id = "${user.id}";
+					$("#edit-owner").val(id);
+
+					$("#edit-id").val(data.c.id);
+					$("#edit-name").val(data.c.name);
+					$("#edit-website").val(data.c.website);
+					$("#edit-phone").val(data.c.phone);
+					$("#edit-description").val(data.c.description);
+					$("#edit-contactSummary").val(data.c.contactSummary);
+					$("#edit-nextContactTime").val(data.c.nextContactTime);
+					$("#edit-address").val(data.c.address);
+
+					$("#editCustomerModal").modal("show");
+				}
+			})
+		})
+
+		$("#updateBttn").click(function () {
+			$.ajax({
+				url:"workbench/customer/updateCustomerById.do",
+				data:{
+					"id"				:$.trim($("#edit-id").val()),
+					"owner"				:$.trim($("#edit-owner").val()),
+					"name"				:$.trim($("#edit-name").val()),
+					"website"			:$.trim($("#edit-website").val()),
+					"phone"				:$.trim($("#edit-phone").val()),
+					"description"		:$.trim($("#edit-description").val()),
+					"contactSummary"	:$.trim($("#edit-contactSummary").val()),
+					"nextContactTime"	:$.trim($("#edit-nextContactTime").val()),
+					"address"			:$.trim($("#edit-address").val())
+				},
+				type: "post",
+				dataType:"json",
+				success:function (data) {
+					if (data.success) {
+						alert("修改成功");
+						window.location.reload();
+					}else {
+						alert("修改失败")
+					}
+					$("#editCustomerModal").modal("hide");
+				}
+			})
+		})
+
+		$("#deleteBttn").click(function () {
+			var param = "id=${customer.id}";
+			if (confirm("确定删除该客户吗？")) {
+				$.ajax({
+					url:"workbench/customer/deleteCustomerById.do",
+					data:param,
+					type:"post",
+					dataType:"json",
+					success:function (data) {
+						if (data.success) {
+							alert("删除成功");
+							window.location.href="workbench/customer/index.jsp";
+						}else {
+							alert("删除失败");
+						}
+					}
+				})
+			}
+		})
 	});
-	
+
 </script>
 
 </head>
@@ -206,13 +288,13 @@ request.getContextPath() + "/";
                             <div class="form-group">
                                 <label for="edit-contactSummary" class="col-sm-2 control-label">联系纪要</label>
                                 <div class="col-sm-10" style="width: 81%;">
-                                    <textarea class="form-control" rows="3" id="edit-contactSummary">这个线索即将被转换</textarea>
+                                    <textarea class="form-control" rows="3" id="create-contactSummary">这个线索即将被转换</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="edit-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
                                 <div class="col-sm-10" style="width: 300px;">
-                                    <input type="text" class="form-control" id="edit-nextContactTime" value="2017-05-01">
+                                    <input type="text" class="form-control" id="create-nextContactTime" value="2017-05-01">
                                 </div>
                             </div>
                         </div>
@@ -240,6 +322,7 @@ request.getContextPath() + "/";
 	
 	<!-- 修改客户的模态窗口 -->
     <div class="modal fade" id="editCustomerModal" role="dialog">
+		<input type="hidden" id="edit-id"/>
         <div class="modal-dialog" role="document" style="width: 85%;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -254,33 +337,31 @@ request.getContextPath() + "/";
                         <div class="form-group">
                             <label for="edit-customerOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
                             <div class="col-sm-10" style="width: 300px;">
-                                <select class="form-control" id="edit-customerOwner">
-                                    <option>zhangsan</option>
-                                    <option>lisi</option>
-                                    <option>wangwu</option>
+                                <select class="form-control" id="edit-owner">
+
                                 </select>
                             </div>
                             <label for="edit-customerName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
                             <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="edit-customerName" value="动力节点">
+                                <input type="text" class="form-control" id="edit-name">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="edit-website" class="col-sm-2 control-label">公司网站</label>
                             <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="edit-website" value="http://www.bjpowernode.com">
+                                <input type="text" class="form-control" id="edit-website">
                             </div>
                             <label for="edit-phone" class="col-sm-2 control-label">公司座机</label>
                             <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="edit-phone" value="010-84846003">
+                                <input type="text" class="form-control" id="edit-phone">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="edit-describe" class="col-sm-2 control-label">描述</label>
                             <div class="col-sm-10" style="width: 81%;">
-                                <textarea class="form-control" rows="3" id="edit-describe"></textarea>
+                                <textarea class="form-control" rows="3" id="edit-description"></textarea>
                             </div>
                         </div>
 
@@ -290,13 +371,13 @@ request.getContextPath() + "/";
                             <div class="form-group">
                                 <label for="create-contactSummary1" class="col-sm-2 control-label">联系纪要</label>
                                 <div class="col-sm-10" style="width: 81%;">
-                                    <textarea class="form-control" rows="3" id="create-contactSummary1"></textarea>
+                                    <textarea class="form-control" rows="3" id="edit-contactSummary"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="create-nextContactTime2" class="col-sm-2 control-label">下次联系时间</label>
                                 <div class="col-sm-10" style="width: 300px;">
-                                    <input type="text" class="form-control" id="create-nextContactTime2">
+                                    <input type="text" class="form-control" id="edit-nextContactTime">
                                 </div>
                             </div>
                         </div>
@@ -316,7 +397,7 @@ request.getContextPath() + "/";
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+                    <button type="button" class="btn btn-primary" id="updateBttn">更新</button>
                 </div>
             </div>
         </div>
@@ -330,11 +411,11 @@ request.getContextPath() + "/";
 	<!-- 大标题 -->
 	<div style="position: relative; left: 40px; top: -30px;">
 		<div class="page-header">
-			<h3>动力节点 <small><a href="http://www.bjpowernode.com" target="_blank">http://www.bjpowernode.com</a></small></h3>
+			<h3>${customer.name} <small><a href="http://www.bjpowernode.com" target="_blank">${customer.website}</a></small></h3>
 		</div>
 		<div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
-			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editCustomerModal"><span class="glyphicon glyphicon-edit"></span> 编辑</button>
-			<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+			<button type="button" class="btn btn-default" id="editCustomerBttn"><span class="glyphicon glyphicon-edit"></span> 编辑</button>
+			<button type="button" class="btn btn-danger" id="deleteBttn"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 		</div>
 	</div>
 	
@@ -342,49 +423,49 @@ request.getContextPath() + "/";
 	<div style="position: relative; top: -70px;">
 		<div style="position: relative; left: 40px; height: 30px;">
 			<div style="width: 300px; color: gray;">所有者</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>zhangsan</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${customer.owner}</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">名称</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>动力节点</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${customer.name}</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 10px;">
 			<div style="width: 300px; color: gray;">公司网站</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>http://www.bjpowernode.com</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${customer.website}</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">公司座机</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>010-84846003</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${customer.phone}</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 20px;">
 			<div style="width: 300px; color: gray;">创建者</div>
-			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>zhangsan&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">2017-01-18 10:10:10</small></div>
+			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>${customer.createBy}&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">${customer.createTime}</small></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 30px;">
 			<div style="width: 300px; color: gray;">修改者</div>
-			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>zhangsan&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">2017-01-19 10:10:10</small></div>
+			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>${customer.editBy}&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">${customer.editTime}</small></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
         <div style="position: relative; left: 40px; height: 30px; top: 40px;">
             <div style="width: 300px; color: gray;">联系纪要</div>
             <div style="width: 630px;position: relative; left: 200px; top: -20px;">
                 <b>
-                    这条线索即将被转换
+					${customer.contactSummary}
                 </b>
             </div>
             <div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
         </div>
         <div style="position: relative; left: 40px; height: 30px; top: 50px;">
             <div style="width: 300px; color: gray;">下次联系时间</div>
-            <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>2017-05-01</b></div>
+            <div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${customer.nextContactTime}</b></div>
             <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -20px; "></div>
         </div>
 		<div style="position: relative; left: 40px; height: 30px; top: 60px;">
 			<div style="width: 300px; color: gray;">描述</div>
 			<div style="width: 630px;position: relative; left: 200px; top: -20px;">
 				<b>
-					这是一条线索的描述信息
+					${customer.description}
 				</b>
 			</div>
 			<div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
@@ -393,7 +474,7 @@ request.getContextPath() + "/";
             <div style="width: 300px; color: gray;">详细地址</div>
             <div style="width: 630px;position: relative; left: 200px; top: -20px;">
                 <b>
-                    北京大兴大族企业湾
+					${customer.address}
                 </b>
             </div>
             <div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>

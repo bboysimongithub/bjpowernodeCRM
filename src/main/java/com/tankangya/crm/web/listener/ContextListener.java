@@ -17,9 +17,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @WebListener
 public class ContextListener implements ServletContextListener {
@@ -50,5 +48,17 @@ public class ContextListener implements ServletContextListener {
         for (String key: set) {
             application.setAttribute(key,map.get(key));
         }
+
+
+        ResourceBundle rb = ResourceBundle.getBundle("Stage2Possibility");
+        Enumeration<String> keys = rb.getKeys();
+        Map<String, String> pMap = new HashMap<>();
+        while (keys.hasMoreElements()) {
+            String key = keys.nextElement();
+            String value = rb.getString(key);
+            pMap.put(key,value);
+        }
+
+        application.setAttribute("pMap",pMap);
     }
 }

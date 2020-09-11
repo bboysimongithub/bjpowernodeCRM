@@ -48,6 +48,7 @@ public class ActivityController {
     @ResponseBody
     public void save (HttpServletRequest request, HttpServletResponse response, Activity activity) {
 
+        System.out.println("保存");
         activity.setId(UUIDUtil.getUUID());
         activity.setCreateTime(DateTimeUtil.getSysTime());
         activity.setCreateBy(((User)request.getSession().getAttribute("user")).getName());
@@ -116,6 +117,7 @@ public class ActivityController {
         System.out.println("执行市场活动的删除操作");
 
         String ids[] = request.getParameterValues("id");
+
 
         boolean flag = activityService.deleteActivity(ids);
 

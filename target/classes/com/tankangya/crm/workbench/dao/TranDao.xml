@@ -4,7 +4,174 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.tankangya.crm.workbench.dao.TranDao">
-	
+
+	<select id="detail" resultType="Tran">
+		SELECT
+		tran.id,
+		user.name as owner,
+		tran.money,
+		tran.name,
+		tran.expectedDate,
+		cus.name as customerId,
+		tran.stage,
+		tran.type,
+		tran.source,
+		ac.name as activityId,
+		con.fullname as contactsId,
+		tran.createBy,
+		tran.createTime,
+		tran.editBy,
+		tran.editTime,
+		tran.description,
+		tran.contactSummary,
+		tran.nextContactTime
+		FROM tbl_tran tran
+		LEFT JOIN tbl_user user
+		ON tran.OWNER=user.id
+		LEFT JOIN tbl_customer cus
+		ON tran.customerId=cus.id
+		LEFT JOIN tbl_contacts con
+		ON tran.contactsId=con.id
+		LEFT JOIN tbl_activity ac
+		ON tran.activityId=ac.id
+		where tran.id=#{id}
+	</select>
+
+	<select id="getTranList" resultType="Tran">
+		SELECT
+		tran.id,
+		user.name as owner,
+		tran.money,
+		tran.name,
+		tran.expectedDate,
+		cus.name as customerId,
+		tran.stage,
+		tran.type,
+		tran.source,
+		ac.name as activityId,
+		con.fullname as contactsId,
+		tran.createBy,
+		tran.createTime,
+		tran.editBy,
+		tran.editTime,
+		tran.description,
+		tran.contactSummary,
+		tran.nextContactTime
+		FROM tbl_tran tran
+		LEFT JOIN tbl_user user
+		ON tran.OWNER=user.id
+		LEFT JOIN tbl_customer cus
+		ON tran.customerId=cus.id
+		LEFT JOIN tbl_contacts con
+		ON tran.contactsId=con.id
+		LEFT JOIN tbl_activity ac
+		ON tran.activityId=ac.id
+		<where>
+			<if test="owner!=null and owner!=''">
+				#{owner}
+			</if>
+			<if test="name!=null and name!=''">
+				#{name}
+			</if>
+			<if test="customerId!=null and customerId!=''">
+				#{customerId}
+			</if>
+			<if test="stage!=null and stage!=''">
+				#{stage}
+			</if>
+			<if test="type!=null and type!=''">
+				#{type}
+			</if>
+			<if test="source!=null and source!=''">
+				#{source}
+			</if>
+			<if test="contactsId!=null and contactsId!=''">
+				#{contactsId}
+			</if>
+		</where>
+		limit #{countPage}, #{pageSize}
+	</select>
+
+	<select id="getTranCount" resultType="int">
+		SELECT
+		count(*)
+		FROM tbl_tran tran
+		LEFT JOIN tbl_user user
+		ON tran.OWNER=user.id
+		LEFT JOIN tbl_customer cus
+		ON tran.customerId=cus.id
+		LEFT JOIN tbl_contacts con
+		ON tran.contactsId=con.id
+		LEFT JOIN tbl_activity ac
+		ON tran.activityId=ac.id
+		<where>
+			<if test="owner!=null and owner!=''">
+				#{owner}
+			</if>
+			<if test="name!=null and name!=''">
+				#{name}
+			</if>
+			<if test="customerId!=null and customerId!=''">
+				#{customerId}
+			</if>
+			<if test="stage!=null and stage!=''">
+				#{stage}
+			</if>
+			<if test="type!=null and type!=''">
+				#{type}
+			</if>
+			<if test="source!=null and source!=''">
+				#{source}
+			</if>
+			<if test="contactsId!=null and contactsId!=''">
+				#{contactsId}
+			</if>
+		</where>
+	</select>
+
+    <insert id="saveTran">
+
+        insert into tbl_tran (
+
+            id,
+	        owner,
+	        money,
+	        name,
+	        expectedDate,
+	        customerId,
+	        stage,
+	        type,
+	        source,
+	        activityId,
+	        contactsId,
+	        createBy,
+	        createTime,
+	        description,
+	        contactSummary,
+	        nextContactTime
+
+        ) values (
+
+            #{id},
+	        #{owner},
+	        #{money},
+	        #{name},
+	        #{expectedDate},
+	        #{customerId},
+	        #{stage},
+	        #{type},
+	        #{source},
+	        #{activityId},
+	        #{contactsId},
+	        #{createBy},
+	        #{createTime},
+	        #{description},
+	        #{contactSummary},
+	        #{nextContactTime}
+
+        )
+
+    </insert>
   	
 </mapper>
 

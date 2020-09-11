@@ -1,5 +1,8 @@
 package com.tankangya.crm.workbench.entity;
 
+import org.springframework.stereotype.Component;
+
+@Component("1")
 public class ClueActivityRelation {
 	
 	private String id;
